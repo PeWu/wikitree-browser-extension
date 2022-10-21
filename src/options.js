@@ -1,13 +1,9 @@
 import $ from 'jquery';
+import { CATEGORIES, getFeatures } from './core/features';
+import './features/features';
 
 // an array of information about features
-const features = [
-  {
-    name: "Printer Friendly Bio",
-    id: "printerFriendly",
-    description: "Change the page to a printer-friendly one.",
-    category: "Global",
-  },
+const features = getFeatures().concat([
   {
     name: "Source Previews",
     id: "sPreviews",
@@ -46,13 +42,6 @@ const features = [
     category: "Profile",
   },
   {
-    name: "Family Timeline",
-    id: "familyTimeline",
-    description:
-      "Displays a family timeline. A button is added to the profile submenu.",
-    category: "Profile",
-  },
-  {
     name: "Draft List",
     id: "draftList",
     description:
@@ -66,6 +55,13 @@ const features = [
     category: "Global",
   },
   {
+    name: "Distance and Relationship",
+    id: "distanceAndRelationship",
+    description:
+      "Adds the distance (degrees) between you and the profile person and any relationship between you.",
+    category: "Profile",
+  },
+  {
     name: "Locations Helper",
     id: "locationsHelper",
     description:
@@ -73,13 +69,7 @@ const features = [
       " based on family members' locations, and demoting likely wrong locations, based on the dates.",
     category: "Editing",
   },
-  {
-    name: "Distance and Relationship",
-    id: "distanceAndRelationship",
-    description:
-      "Adds the distance (degrees) between you and the profile person and any relationship between you.",
-    category: "Profile",
-  },
+
   {
     name: "Dark Mode",
     id: "darkMode",
@@ -97,19 +87,23 @@ const features = [
     name: "Automatic GEDCOM Cleanup (AGC)",
     id: "agc",
     description:
-      "Reformats a biography and updates data fields when the profile was created froma GEDCOM.",
+      "Reformats a biography and updates data fields when the profile was created from a GEDCOM.",
     category: "Editing",
   },
   {
-    name: 'BioCheck',
-    id: 'bioCheck',
-    description: 'Check biography style and sources.',
-    category: 'Editing',
+    name: "BioCheck",
+    id: "bioCheck",
+    description: "Check biography style and sources.",
+    category: "Editing",
   },
-];
-
-// Categories
-const categories = ["Global", "Profile", "Editing", "Style"];
+  {
+    name: "Category Finder Pins",
+    id: "categoryFinderPins",
+    description:
+      "Adds pins to Category Finder results (on the edit page), similar to the pins in the location dropdown.  These pins link to the category page for you to check that you have the right category.",
+    category: "Editing",
+  },
+]);
 
 // saves options to chrome.storage
 function save_options() {
@@ -142,7 +136,7 @@ features.sort(function (a, b) {
 });
 
 // add each feature to the options page
-categories.forEach(function (category) {
+CATEGORIES.forEach(function (category) {
   $("#features").append(`<h2 data-category="${category}">${category} 
   <div class="feature-toggle">
   <label class="switch">

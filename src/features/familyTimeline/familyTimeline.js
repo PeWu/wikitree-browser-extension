@@ -2,28 +2,37 @@ import * as $ from 'jquery';
 import 'jquery-ui/ui/widgets/draggable';
 import {getRelatives} from 'wikitree-js';
 import {createProfileSubmenuLink, extractRelatives, isOK} from '../../core/common';
+import {registerFeature, PROFILE} from '../../core/features';
 import './familyTimeline.css';
 
-chrome.storage.sync.get("familyTimeline", (result) => {
-  if (
-    result.familyTimeline &&
-    $("body.profile").length &&
-    window.location.href.match("Space:") == null
-  ) {
-    // Add a link to the short list of links below the tabs
-    const options = {
-      title: "Display a family timeline",
-      id: "familyTimeLineButton",
-      text: "Family Timeline",
-      url: "#n",
-    };
-    createProfileSubmenuLink(options);
-    $("#" + options.id).click(function (e) {
-      e.preventDefault();
-      timeline();
-    });
-  }
+registerFeature({
+  name: "Family Timeline",
+  id: "familyTimeline",
+  description:
+    "Displays a family timeline. A button is added to the profile submenu.",
+  category: PROFILE,
+  init,
 });
+
+function init() {
+  if (!$("body.profile").length ||
+      window.location.href.match("Space:") !== null) {
+    return;
+  }
+
+  // Add a link to the short list of links below the tabs
+  const options = {
+    title: "Display a family timeline",
+    id: "familyTimeLineButton",
+    text: "Family Timeline",
+    url: "#n",
+  };
+  createProfileSubmenuLink(options);
+  $("#" + options.id).click(function (e) {
+    e.preventDefault();
+    timeline();
+  });
+}
 
 // Get a year from the person's data
 function getTheYear(theDate, ev, person) {
